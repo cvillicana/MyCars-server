@@ -5,7 +5,7 @@ var express      = require('express'),
   bodyParser     = require('body-parser'),
   cors           = require('cors'),
   databaseConfig = require('./config/database'),
-  router         = require('./app/routes');
+  router         = require('./routes');
 
 mongoose.connect(databaseConfig.url);
 
