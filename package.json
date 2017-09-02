@@ -1,7 +1,7 @@
 {
-  "name": "ionic2-roles",
+  "name": "Carpool API",
   "version": "0.1.0",
-  "description": "A sample Node.js app using Express 4",
+  "description": "Carpool server",
   "engines": {
     "node": "5.9.1"
   },
