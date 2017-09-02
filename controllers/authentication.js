@@ -1,6 +1,6 @@
 var jwt = require('jsonwebtoken');
-var User = require('../models/user');
-var authConfig = require('../../config/auth');
+var User = require('./models/user');
+var authConfig = require('./config/auth');
 
 function generateToken(user){
     return jwt.sign(user, authConfig.secret, {
