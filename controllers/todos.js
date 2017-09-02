@@ -1,4 +1,4 @@
-var Todo = require('./models/todo');
+var Todo = require('../models/todo');
 
 exports.getTodos = function(req, res, next){
 

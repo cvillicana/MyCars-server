@@ -7,7 +7,7 @@ var express      = require('express'),
   databaseConfig = require('./config/database'),
   router         = require('./routes');
 
-mongoose.connect(databaseConfig.url);
+mongoose.connect(databaseConfig.url,databaseConfig.options);
 
 app.listen(process.env.PORT || 8080);
 console.log("App listening on port 8080");

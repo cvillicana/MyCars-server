@@ -1,7 +1,7 @@
 var AuthenticationController = require('./controllers/authentication'),
     TodoController = require('./controllers/todos'),
     express = require('express'),
-    passportService = require('../config/passport'),
+    passportService = require('./config/passport'),
     passport = require('passport');
 
 var requireAuth = passport.authenticate('jwt', {session: false}),
