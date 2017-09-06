@@ -15,7 +15,7 @@ module.exports = function(app){
 
     // Auth Routes
     apiRoutes.use('/auth', authRoutes);
-
+    authRoutes.post('/facebook', AuthenticationController.authFacebook);
     authRoutes.post('/register', AuthenticationController.register);
     authRoutes.post('/login', requireLogin, AuthenticationController.login);
 

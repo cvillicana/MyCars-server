@@ -9,15 +9,17 @@ var UserSchema = new mongoose.Schema({
         unique: true,
         required: true
     },
-    password: {
-        type: String,
-        required: true
-    },
+    password: String,
     role: {
         type: String,
         enum: ['user', 'admin'],
         default: 'user'
-    }
+    },
+    facebook: {
+      type: String,
+      unique: true
+    },
+    picture: String
 
 }, {
     timestamps: true

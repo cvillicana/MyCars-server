@@ -16,6 +16,58 @@ function setUserInfo(request){
     };
 }
 
+exports.authFacebook = function(req, res, next){
+
+  var email = req.body.email;
+  var userId = req.body.userId;
+
+  if(!email){
+      return res.status(422).send({error: 'You must enter an email address'});
+  }
+
+  if(!userId){
+      return res.status(422).send({error: 'You must enter a password'});
+  }
+
+  User.findOne({facebook: userId}, function(err, existingUser){
+
+    if(err){
+      return next(err);
+    }
+
+    if(existingUser){
+      var userInfo = setUserInfo(existingUser);
+
+      return res.status(200).json({
+          token: 'JWT ' + generateToken(userInfo),
+          user: userInfo
+      });
+    }
+
+    var user = new User({
+      email: email,
+      facebook: userId
+    });
+
+    user.save(function(err, user){
+
+      if(err){
+        return next(err);
+      }
+
+      var userInfo = setUserInfo(user);
+
+      res.status(201).json({
+          token: 'JWT ' + generateToken(userInfo),
+          user: userInfo
+      });
+
+    });
+
+  });
+
+}
+
 exports.login = function(req, res, next){
 
     var userInfo = setUserInfo(req.user);
