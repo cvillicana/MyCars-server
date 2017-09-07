@@ -20,16 +20,23 @@ exports.authFacebook = function(req, res, next){
 
   var email = req.body.email;
   var userId = req.body.userId;
+  var picture = req.body.picture;
+  var name = req.body.name;
+  var password = req.body.password;
 
   if(!email){
       return res.status(422).send({error: 'You must enter an email address'});
   }
 
   if(!userId){
+      return res.status(422).send({error: 'You must enter an user id'});
+  }
+
+  if(!password){
       return res.status(422).send({error: 'You must enter a password'});
   }
 
-  User.findOne({facebook: userId}, function(err, existingUser){
+  User.findOne({email: email}, function(err, existingUser){
 
     if(err){
       return next(err);
@@ -46,7 +53,10 @@ exports.authFacebook = function(req, res, next){
 
     var user = new User({
       email: email,
-      facebook: userId
+      facebookId: userId,
+      picture:picture,
+      name:name,
+      password:password
     });
 
     user.save(function(err, user){
@@ -83,6 +93,7 @@ exports.register = function(req, res, next){
 
     var email = req.body.email;
     var password = req.body.password;
+    var name = req.body.name;
 
     if(!email){
         return res.status(422).send({error: 'You must enter an email address'});
@@ -104,7 +115,8 @@ exports.register = function(req, res, next){
 
         var user = new User({
             email: email,
-            password: password
+            password: password,
+            name: name
         });
 
         user.save(function(err, user){
