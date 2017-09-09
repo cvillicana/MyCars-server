@@ -19,7 +19,10 @@ var UserSchema = new mongoose.Schema({
         enum: ['user', 'admin'],
         default: 'user'
     },
-    facebookId: String,
+    facebookId: {
+      type: String,
+      unique: false
+    },
     picture: String
 
 }, {
