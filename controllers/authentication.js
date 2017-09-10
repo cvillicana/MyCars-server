@@ -139,7 +139,7 @@ exports.register = function(req, res, next){
 }
 
 exports.exists = function(req, res, next){
-    var email = req.body.email;
+    var email = req.params.email;
 
     if(!email){
       return res.status(422).send({error: 'You must enter an email address'});

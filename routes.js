@@ -15,10 +15,10 @@ module.exports = function(app){
 
     // Auth Routes
     apiRoutes.use('/auth', authRoutes);
+    authRoutes.get('/exists/:email', AuthenticationController.exists);
     authRoutes.post('/facebook', AuthenticationController.authFacebook);
     authRoutes.post('/register', AuthenticationController.register);
     authRoutes.post('/login', requireLogin, AuthenticationController.login);
-    authRoutes.get('/exists', AuthenticationController.exists);
 
     authRoutes.get('/protected', requireAuth, function(req, res){
         res.send({ content: 'Success'});
