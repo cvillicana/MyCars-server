@@ -18,6 +18,7 @@ module.exports = function(app){
     authRoutes.post('/facebook', AuthenticationController.authFacebook);
     authRoutes.post('/register', AuthenticationController.register);
     authRoutes.post('/login', requireLogin, AuthenticationController.login);
+    authRoutes.get('/exists', AuthenticationController.exists);
 
     authRoutes.get('/protected', requireAuth, function(req, res){
         res.send({ content: 'Success'});

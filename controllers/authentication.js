@@ -138,6 +138,33 @@ exports.register = function(req, res, next){
 
 }
 
+exports.exists = function(req, res, next){
+    var email = req.body.email;
+
+    if(!email){
+      return res.status(422).send({error: 'You must enter an email address'});
+    }
+
+    User.findOne({email:email}, function(err,existingUser)){
+
+      if(err){
+        return next(err);
+      }
+
+      if(existingUser){
+        return res.status(201).json({
+          exists: true
+        });
+      }
+
+      return res.status(201).json({
+        exists: false
+      });
+
+    }
+
+}
+
 exports.roleAuthorization = function(roles){
 
     return function(req, res, next){
