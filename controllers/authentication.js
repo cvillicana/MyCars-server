@@ -152,9 +152,7 @@ exports.exists = function(req, res, next){
       }
 
       if(existingUser){
-        return res.status(201).json({
-          exists: true
-        });
+        return res.status(422).send({error: 'That email address is already in use'});
       }
 
       return res.status(201).json({
