@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "Carpool server",
   "engines": {
-    "node": "5.9.1"
+    "node": "8.5.0"
   },
   "main": "server.js",
   "scripts": {
