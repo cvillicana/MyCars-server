@@ -8,8 +8,9 @@ var s3 = new AWS.S3();
 exports.saveFile = function(req, res, next){
 
   var filename = req.params.filename;
+  //todo change route to another carpet
   var pathFile = path.basename(req.params.filename);
-  pathFile = path.resolve(__dirname, pathFile);
+  pathFile = path.resolve(__dirname, "files", pathFile);
   var dst = fs.createWriteStream(pathFile);
   req.pipe(dst);
 
