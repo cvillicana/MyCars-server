@@ -4,10 +4,13 @@ var AuthenticationController  = require('./controllers/authentication'),
     UploadService             = require('./services/uploadService'),
     express                   = require('express'),
     passportService           = require('./config/passport'),
-    passport                  = require('passport');
+    passport                  = require('passport'),
+    multer                    = require('multer');
 
 var requireAuth = passport.authenticate('jwt', {session: false}),
     requireLogin = passport.authenticate('local', {session: false});
+
+var upload = multer({ dest: './uploads/' });
 
 module.exports = function(app){
 
@@ -30,7 +33,7 @@ module.exports = function(app){
     apiRoutes.use('/users', userRoutes);
     userRoutes.get('/me', requireAuth, UserController.getMyUser);
     userRoutes.put('/me', requireAuth, UserController.updateMyUser);
-    userRoutes.post('/me/picture', requireAuth, UserController.uploadImage);
+    userRoutes.post('/me/picture', upload.any(), requireAuth , UserController.uploadImage);
 
     // Todo Routes
     apiRoutes.use('/todos', todoRoutes);

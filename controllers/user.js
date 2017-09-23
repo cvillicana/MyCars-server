@@ -83,7 +83,7 @@ exports.uploadImage = function(req, res, next){
 
   var filename = req.user._doc.name.firstName + req.user._doc.name.lastName + Date.now() + ".png";
 
-  UploadService.saveFile(req, filename, "profile-pictures")
+  UploadService.uploadFile(req, filename, "profile-pictures")
     .then((data) => {
 
       var update = { picture : data.Location };
