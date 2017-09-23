@@ -7,7 +7,7 @@ var express      = require('express'),
   databaseConfig = require('./config/database'),
   router         = require('./routes');
 
-var connection = mongoose.connect(databaseConfig.url,databaseConfig.options);
+var connection = mongoose.connect(databaseConfig().url,databaseConfig().options);
 
 connection.on('error', console.error.bind(console, 'connection error:'));
 connection.once('open', function() {

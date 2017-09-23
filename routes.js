@@ -30,6 +30,7 @@ module.exports = function(app){
     //User Routes
     apiRoutes.use('/users', userRoutes);
     userRoutes.get('/me', requireAuth, UserController.getUser);
+    userRoutes.put('/me', requireAuth, UserController.updateUser);
 
     // Todo Routes
     apiRoutes.use('/todos', todoRoutes);
