@@ -14,7 +14,6 @@ module.exports = function(app){
     var apiRoutes     = express.Router(),
         authRoutes    = express.Router(),
         userRoutes    = express.Router(),
-        serviceRoutes = express.Router(),
         todoRoutes    = express.Router();
 
     // Auth Routes
@@ -38,10 +37,6 @@ module.exports = function(app){
     todoRoutes.get('/', requireAuth, AuthenticationController.roleAuthorization(['user','admin']), TodoController.getTodos);
     todoRoutes.post('/', requireAuth, AuthenticationController.roleAuthorization(['user','admin']), TodoController.createTodo);
     todoRoutes.delete('/:todo_id', requireAuth, AuthenticationController.roleAuthorization(['admin']), TodoController.deleteTodo);
-
-    //Service Routes
-    // apiRoutes.use('/service', serviceRoutes);
-    // serviceRoutes.post('/upload/:filename', UploadService.uploadFile);
 
     // Set up routes
     app.use('/api', apiRoutes);
