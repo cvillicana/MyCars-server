@@ -1,6 +1,6 @@
 var User = require('../models/user');
 
-exports.getUser = function(req, res, next){
+exports.getMyUser = function(req, res, next){
 
     var email = req.user._doc.email;
 
@@ -16,18 +16,20 @@ exports.getUser = function(req, res, next){
 
       if(user){
 
-        if(user.password){
-          user.password = "";
+        var result = {
+          name : user.name,
+          picture : user.picture,
+          email : user.email
         }
 
-        return res.status(200).send(user);
+        return res.status(200).send(result);
       }
 
     });
 
 }
 
-exports.updateUser = function(req, res, nex){
+exports.updateMyUser = function(req, res, nex){
 
     var query = { email : req.user._doc.email };
 
@@ -55,11 +57,13 @@ exports.updateUser = function(req, res, nex){
             return next(err);
           }
 
-          if(updatedUser.password){
-            user.password = "";
+          var result = {
+            name : updatedUser.name,
+            picture : updatedUser.picture,
+            email : updatedUser.email
           }
 
-          res.status(200).send(updatedUser);
+          res.status(200).send(result);
 
         });
 

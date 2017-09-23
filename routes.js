@@ -29,8 +29,8 @@ module.exports = function(app){
 
     //User Routes
     apiRoutes.use('/users', userRoutes);
-    userRoutes.get('/me', requireAuth, UserController.getUser);
-    userRoutes.put('/me', requireAuth, UserController.updateUser);
+    userRoutes.get('/me', requireAuth, UserController.getMyUser);
+    userRoutes.put('/me', requireAuth, UserController.updateMyUser);
 
     // Todo Routes
     apiRoutes.use('/todos', todoRoutes);
