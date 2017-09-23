@@ -15,6 +15,11 @@ exports.getUser = function(req, res, next){
       }
 
       if(user){
+
+        if(user.password){
+          user.password = "";
+        }
+
         return res.status(200).send(user);
       }
 
@@ -48,6 +53,10 @@ exports.updateUser = function(req, res, nex){
 
           if(err){
             return next(err);
+          }
+
+          if(updatedUser.password){
+            user.password = "";
           }
 
           res.status(200).send(updatedUser);
