@@ -31,6 +31,7 @@ module.exports = function(app){
     apiRoutes.use('/users', userRoutes);
     userRoutes.get('/me', requireAuth, UserController.getMyUser);
     userRoutes.put('/me', requireAuth, UserController.updateMyUser);
+    userRoutes.post('/me/picture', requireAuth, UserController.uploadImage);
 
     // Todo Routes
     apiRoutes.use('/todos', todoRoutes);
@@ -39,8 +40,8 @@ module.exports = function(app){
     todoRoutes.delete('/:todo_id', requireAuth, AuthenticationController.roleAuthorization(['admin']), TodoController.deleteTodo);
 
     //Service Routes
-    apiRoutes.use('/service', serviceRoutes);
-    serviceRoutes.post('/upload/:filename', UploadService.saveFile);
+    // apiRoutes.use('/service', serviceRoutes);
+    // serviceRoutes.post('/upload/:filename', UploadService.uploadFile);
 
     // Set up routes
     app.use('/api', apiRoutes);

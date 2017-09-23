@@ -1,4 +1,5 @@
 var User = require('../models/user');
+var UploadService = require('../services/uploadService');
 
 exports.getMyUser = function(req, res, next){
 
@@ -68,4 +69,50 @@ exports.updateMyUser = function(req, res, nex){
         });
 
     });
+}
+
+exports.uploadImage = function(req, res, next){
+
+  var email = req.user._doc.email;
+
+  if(!email){
+    return res.status(422).send({error: 'You must enter an email address'});
+  }
+
+  var query = { email : req.user._doc.email };
+
+  var filename = req.user._doc.name.firstName + req.user._doc.name.lastName + Date.now() + ".png";
+
+  UploadService.saveFile(req, filename, "profile-pictures")
+    .then((data) => {
+
+      var update = { picture : data.Location };
+
+      User.findOne(query, function(err,user){
+
+          if(err){
+            return next(err);
+          }
+
+          user.set(update);
+
+          user.save(function (err, updatedUser){
+
+            if(err){
+              return next(err);
+            }
+
+            var result = {
+              picture : updatedUser.picture
+            }
+
+            res.status(200).send(result);
+
+          });
+
+      });
+
+    })
+    .catch((err) => res.status(400).send());
+
 }
