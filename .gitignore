@@ -1,4 +1,6 @@
 
 node_modules/
 
-services/files/
+services/files/*
+
+!services/files/.gitkeep
