@@ -6,7 +6,7 @@ exports.getMyUser = function(req, res, next){
     var email = req.user._doc.email;
 
     if(!email){
-      return res.status(422).send({error: 'You must enter an email address'});
+      return res.status(422).send({error: 'Not a valid token'});
     }
 
     User.findOne({email:email}, function(err,user){
@@ -18,9 +18,10 @@ exports.getMyUser = function(req, res, next){
       if(user){
 
         var result = {
+          username: user.username,
+          email: user.email,
           name : user.name,
-          picture : user.picture,
-          email : user.email
+          picture : user.picture
         }
 
         return res.status(200).send(result);
@@ -60,8 +61,7 @@ exports.updateMyUser = function(req, res, nex){
 
           var result = {
             name : updatedUser.name,
-            picture : updatedUser.picture,
-            email : updatedUser.email
+            picture : updatedUser.picture
           }
 
           res.status(200).send(result);

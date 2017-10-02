@@ -1,6 +1,7 @@
 var AuthenticationController  = require('./controllers/authentication'),
     TodoController            = require('./controllers/todos'),
     UserController            = require('./controllers/user'),
+    TripController            = require('./controllers/trip'),
     UploadService             = require('./services/uploadService'),
     express                   = require('express'),
     passportService           = require('./config/passport'),
@@ -17,6 +18,7 @@ module.exports = function(app){
     var apiRoutes     = express.Router(),
         authRoutes    = express.Router(),
         userRoutes    = express.Router(),
+        tripRoutes    = express.Router(),
         todoRoutes    = express.Router();
 
     // Auth Routes
@@ -34,6 +36,11 @@ module.exports = function(app){
     userRoutes.get('/me', requireAuth, UserController.getMyUser);
     userRoutes.put('/me', requireAuth, UserController.updateMyUser);
     userRoutes.post('/me/picture', upload.any(), requireAuth , UserController.uploadImage);
+
+    //Trip Routes
+    apiRoutes.use('/trips', tripRoutes);
+    tripRoutes.post('/', requireAuth, TripController.create);
+    tripRoutes.get('/me/active', requireAuth, TripController.myActiveTrips);
 
     // Todo Routes
     apiRoutes.use('/todos', todoRoutes);

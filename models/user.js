@@ -1,6 +1,13 @@
 var mongoose = require('mongoose');
 var bcrypt   = require('bcrypt-nodejs');
 
+class User{
+    get fullName() {
+        return `${this.name.firstName} ${this.name.lastName}`;
+    }
+
+}
+
 var UserSchema = new mongoose.Schema({
 
     email: {
@@ -10,8 +17,8 @@ var UserSchema = new mongoose.Schema({
         required: true
     },
     name:{
-      firstName:String,
-      lastName:String
+        firstName:String,
+        lastName:String
     },
     password: String,
     role: {
@@ -23,11 +30,14 @@ var UserSchema = new mongoose.Schema({
       type: String,
       unique: false
     },
-    picture: String
+    picture: String,
+    username: String
 
 }, {
     timestamps: true
 });
+
+UserSchema.loadClass(User);
 
 UserSchema.pre('save', function(next){
 
@@ -37,6 +47,7 @@ UserSchema.pre('save', function(next){
     if(!user.isModified('password')){
         return next();
     }
+
 
     bcrypt.genSalt(SALT_FACTOR, function(err, salt){
 
@@ -58,6 +69,7 @@ UserSchema.pre('save', function(next){
     });
 
 });
+
 
 UserSchema.methods.comparePassword = function(passwordAttempt, cb){
 
