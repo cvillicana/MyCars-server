@@ -74,3 +74,32 @@ exports.myActiveTrips = function(req, res, next){
 
 
 }
+
+exports.nearTrips = function(req, res, next){
+
+    var lat = parseFloat(req.body.lat);
+    var lng = parseFloat(req.body.lng);
+
+    var point = { type : "Point", coordinates : [lng,lat] };
+
+    Trip.db.db.command({ geoNear : "trips",
+        near : point,
+        maxDistance: 50000,
+        distanceMultiplier: 0.001,
+        spherical : true,
+        limit : 10}, function(err, results) {
+
+            if(err){
+                return next(err);
+            }
+
+            if(results){
+                res.status(201).json({
+                  trips:results.results
+                });
+            }
+
+
+    });
+
+}

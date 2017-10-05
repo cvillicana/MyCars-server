@@ -41,6 +41,7 @@ module.exports = function(app){
     apiRoutes.use('/trips', tripRoutes);
     tripRoutes.post('/', requireAuth, TripController.create);
     tripRoutes.get('/me/active', requireAuth, TripController.myActiveTrips);
+    tripRoutes.put('/near', TripController.nearTrips);
 
     // Todo Routes
     apiRoutes.use('/todos', todoRoutes);
