@@ -82,22 +82,28 @@ exports.nearTrips = function(req, res, next){
 
     var point = { type : "Point", coordinates : [lng,lat] };
 
-    Trip.db.db.command({ geoNear : "trips",
-        near : point,
-        maxDistance: 50000,
-        distanceMultiplier: 0.001,
-        spherical : true,
-        limit : 10}, function(err, results) {
+    Trip.aggregate([
+      {
+        $geoNear: {
+          near : point,
+          maxDistance: 50000,
+          distanceField: "dist.calculated",
+          distanceMultiplier: 0.001,
+          query: ({ finished : false }, {start: 1}),
+          spherical : true
+        }
+      }
+    ],function(err, results) {
 
-            if(err){
-                return next(err);
-            }
+        if(err){
+            return next(err);
+        }
 
-            if(results){
-                res.status(201).json({
-                  trips:results.results
-                });
-            }
+        if(results){
+            res.status(201).json({
+              trips:results
+            });
+        }
 
 
     });
