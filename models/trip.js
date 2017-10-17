@@ -15,10 +15,8 @@ var TripSchema = new mongoose.Schema({
 
     user: {
       _id: String,
-      name: {
-          firstName: String,
-          lastName: String
-      }
+      fullName: String,
+      picture: String
     },
     start: {
         city: String,
@@ -50,11 +48,15 @@ var TripSchema = new mongoose.Schema({
     },
     passengers: [
       {
-        name: {
-          firstName:String,
-          lastName:String
+        name:{
+            firstName:String,
+            lastName:String
         },
-        accepted: Boolean,
+        picture: String,
+        accepted: {
+          type: Boolean,
+          default: false
+        },
         rate: Number,
         _id: String
       }

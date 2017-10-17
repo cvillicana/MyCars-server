@@ -22,7 +22,11 @@ exports.create = function(req, res, next){
               end : req.body.end,
               distance : req.body.distance,
               options : req.body.options,
-              user : user
+              user : {
+                _id: user._id,
+                picture: user.picture,
+                fullName: user.fullName
+              }
             });
 
             trip.save(function(err, tripSaved){
@@ -77,6 +81,7 @@ exports.myActiveTrips = function(req, res, next){
 
 exports.nearTrips = function(req, res, next){
 
+    var userId = req.user.id;
     var lat = parseFloat(req.body.lat);
     var lng = parseFloat(req.body.lng);
 
@@ -89,7 +94,7 @@ exports.nearTrips = function(req, res, next){
           maxDistance: 50000,
           distanceField: "dist.calculated",
           distanceMultiplier: 0.001,
-          query: ({ finished : false }, {start: 1}),
+          query: ({ "$and": [{ finished : false }, { "user._id": { "$ne": userId }}]}),
           spherical : true
         }
       }
@@ -107,5 +112,59 @@ exports.nearTrips = function(req, res, next){
 
 
     });
+
+}
+
+exports.requestRide = function(req, res, next){
+
+    var _id = req.user.id;
+    var idTrip = req.body.trip;
+
+    if(!_id){
+        return res.status(422).send({error: 'Not a valid token'});
+    }
+
+    Trip.findOne({"$and":[{_id:idTrip},{"user._id":{"$ne":req.user._id}}]}, function(err, trip){
+
+        if(err){
+            return next(err);
+        }
+
+        if(!trip){
+            return res.status(201).send({message: 'NOT TRIPS FOUND'});
+        }
+
+        Trip.findOne({"passengers._id":req.user._id}, function(err, alreadyInTrip){
+
+            if(err){
+                return next(err);
+            }
+
+            if(alreadyInTrip){
+                return res.status(201).send({message: "ALREADY REQUESTED IN THIS TRIP"});
+            }
+
+            if(!(trip.passengersAccepted < trip.options.passengers)){
+                return res.status(201).send({message : "THE TRIP IS FULL"})
+            }
+
+            trip.passengers.push(req.user);
+
+            trip.save(function(err, tripSaved){
+
+                if(err){
+                    return next(err);
+                  }
+
+                res.status(201).json({
+                  message: "REQUEST IN PROGRESS"
+                });
+
+            });
+
+
+        })
+
+    })
 
 }

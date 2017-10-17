@@ -30,7 +30,10 @@ var UserSchema = new mongoose.Schema({
       type: String,
       unique: false
     },
-    picture: String,
+    picture: {
+      type: String,
+      default: 'https://s3-us-west-1.amazonaws.com/vamonos-app/default-pictures/profile-picture.png'
+    },
     username: String
 
 }, {
