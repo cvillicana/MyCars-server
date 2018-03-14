@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "description": "My cars server",
   "engines": {
-    "node": "8.5.0"
+    "node": "8.5.0",
+    "npm": "5.3.0"
   },
   "main": "server.js",
   "scripts": {
