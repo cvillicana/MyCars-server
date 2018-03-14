@@ -11,11 +11,11 @@ module.exports = function(){
       }
     case 'local':
       return{
-        'url': 'mongodb://localhost:27017/Carpool',
+        'url': 'mongodb://localhost:27017/CarShare',
          options : {
            useMongoClient: true,
-           user: 'carpooldb-user',
-           pass: 'mI4v1LL1'
+           user: 'carsharedba',
+           pass: '123'
          }
       }
   }

@@ -1,7 +1,7 @@
 var AuthenticationController  = require('./controllers/authentication'),
-    TodoController            = require('./controllers/todos'),
     UserController            = require('./controllers/user'),
-    TripController            = require('./controllers/trip'),
+    MeliController            = require('./controllers/meli'),
+    CarController             = require('./controllers/car'),
     UploadService             = require('./services/uploadService'),
     express                   = require('express'),
     passportService           = require('./config/passport'),
@@ -16,12 +16,14 @@ var upload = multer({ dest: './uploads/' });
 module.exports = function(app){
 
     var apiRoutes     = express.Router(),
+        carRoutes     = express.Router(),
+        meliRoutes    = express.Router(),
         authRoutes    = express.Router(),
         userRoutes    = express.Router(),
         tripRoutes    = express.Router(),
         todoRoutes    = express.Router();
 
-    // Auth Routes
+    //Auth Routes
     apiRoutes.use('/auth', authRoutes);
     authRoutes.get('/exists/:email', AuthenticationController.exists);
     authRoutes.post('/facebook', AuthenticationController.authFacebook);
@@ -31,26 +33,18 @@ module.exports = function(app){
         res.send({ content: 'Success'});
     });
 
-    //User Routes
-    apiRoutes.use('/users', userRoutes);
+    // Meli Routes
+    apiRoutes.use('/meli', meliRoutes);
+    meliRoutes.get('/categories', MeliController.categories);
+
+    //Car Routes
+    apiRoutes.use('/cars', userRoutes);
     userRoutes.get('/me', requireAuth, UserController.getMyUser);
+    userRoutes.post('/', requireAuth, CarController.saveCar);
     userRoutes.put('/me', requireAuth, UserController.updateMyUser);
-    userRoutes.post('/me/picture', upload.any(), requireAuth , UserController.uploadImage);
-
-    //Trip Routes
-    apiRoutes.use('/trips', tripRoutes);
-    tripRoutes.post('/', requireAuth, TripController.create);
-    tripRoutes.get('/me/active', requireAuth, TripController.myActiveTrips);
-    tripRoutes.put('/near', requireAuth, TripController.nearTrips);
-    tripRoutes.put('/request', requireAuth, TripController.requestRide)
-
-    // Todo Routes
-    apiRoutes.use('/todos', todoRoutes);
-    todoRoutes.get('/', requireAuth, AuthenticationController.roleAuthorization(['user','admin']), TodoController.getTodos);
-    todoRoutes.post('/', requireAuth, AuthenticationController.roleAuthorization(['user','admin']), TodoController.createTodo);
-    todoRoutes.delete('/:todo_id', requireAuth, AuthenticationController.roleAuthorization(['admin']), TodoController.deleteTodo);
+    userRoutes.post('/images', upload.any(), requireAuth , CarController.uploadImage);
 
     // Set up routes
-    app.use('/api', apiRoutes);
+    app.use('/api/v1', apiRoutes);
 
 }

@@ -93,7 +93,6 @@ exports.register = function(req, res, next){
 
     var email = req.body.email;
     var password = req.body.password;
-    var name = req.body.name;
 
     if(!email){
         return res.status(422).send({error: 'You must enter an email address'});
@@ -115,8 +114,7 @@ exports.register = function(req, res, next){
 
         var user = new User({
             email: email,
-            password: password,
-            name: name
+            password: password
         });
 
         user.save(function(err, user){

@@ -3,6 +3,7 @@ var path    = require('path'),
   AWS       = require('aws-sdk');
 
 AWS.config.loadFromPath('./config/aws.json');
+
 var s3 = new AWS.S3();
 
 exports.uploadFile = function(req,filename,bucketKey){
@@ -23,7 +24,7 @@ exports.uploadFile = function(req,filename,bucketKey){
 
       var params = {
         Body: stream,
-        Bucket: "vamonos-app",
+        Bucket: "carshare-app",
         Key: bucketKey + "/" + filename
       };
 
