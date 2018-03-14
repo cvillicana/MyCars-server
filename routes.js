@@ -39,9 +39,9 @@ module.exports = function(app){
 
     //Car Routes
     apiRoutes.use('/cars', userRoutes);
-    userRoutes.get('/me', requireAuth, UserController.getMyUser);
+    userRoutes.get('/me', requireAuth, CarController.myCars);
     userRoutes.post('/', requireAuth, CarController.saveCar);
-    userRoutes.put('/me', requireAuth, UserController.updateMyUser);
+    // userRoutes.put('/me', requireAuth, UserController.updateMyUser);
     userRoutes.post('/images', upload.any(), requireAuth , CarController.uploadImage);
 
     // Set up routes
