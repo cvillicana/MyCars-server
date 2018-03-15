@@ -23,7 +23,7 @@ exports.saveCar = function(req, res, next){
           make : req.body.make,
           model : req.body.model,
           version : req.body.version,
-          userId : user._id,
+          _user : user._id,
           price : req.body.price
         });
 
@@ -59,7 +59,7 @@ exports.myCars = function(req, res, next){
       }
 
       if(user){
-        Car.findOne({_user:user._id}, function(err, cars){
+        Car.find({_user:user._id}, function(err, cars){
 
           if(err){
             return next(err);
@@ -73,7 +73,7 @@ exports.myCars = function(req, res, next){
 
             var result = {
               success :true,
-              cars : cars
+              data : cars
             }
 
             res.status(200).send(result);
