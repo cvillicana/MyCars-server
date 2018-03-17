@@ -5,7 +5,6 @@ class User{
     get fullName() {
         return `${this.name.firstName} ${this.name.lastName}`;
     }
-
 }
 
 var UserSchema = new mongoose.Schema({
@@ -23,8 +22,8 @@ var UserSchema = new mongoose.Schema({
     password: String,
     role: {
         type: String,
-        enum: ['user', 'admin'],
-        default: 'user'
+        enum: ['employee', 'manager', 'admin'],
+        default: 'manager'
     },
     facebookId: {
       type: String,

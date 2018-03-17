@@ -12,7 +12,8 @@ function setUserInfo(request){
     return {
         _id: request._id,
         email: request.email,
-        role: request.role
+        role: request.role,
+        name: request.fullName,
     };
 }
 
@@ -93,6 +94,10 @@ exports.register = function(req, res, next){
 
     var email = req.body.email;
     var password = req.body.password;
+    var name = {
+      firstName: req.body.firstName,
+      lastName: req.body.lastName
+    };
 
     if(!email){
         return res.status(422).send({error: 'You must enter an email address'});
@@ -114,16 +119,17 @@ exports.register = function(req, res, next){
 
         var user = new User({
             email: email,
+            name: name,
             password: password
         });
 
-        user.save(function(err, user){
+        user.save(function(err, userSaved){
 
             if(err){
                 return next(err);
             }
 
-            var userInfo = setUserInfo(user);
+            var userInfo = setUserInfo(userSaved);
 
             res.status(201).json({
                 token: 'JWT ' + generateToken(userInfo),
