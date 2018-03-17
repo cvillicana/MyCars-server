@@ -24,7 +24,9 @@ exports.saveCar = function(req, res, next){
           model : req.body.model,
           version : req.body.version,
           _user : user._id,
-          price : req.body.price
+          price : req.body.price,
+          contactPhone: req.body.contactPhone,
+          ownerName: req.body.ownerName
         });
 
         car.save(function(err, _car){

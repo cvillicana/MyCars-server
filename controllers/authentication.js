@@ -14,6 +14,7 @@ function setUserInfo(request){
         email: request.email,
         role: request.role,
         name: request.fullName,
+        picture: request.picture
     };
 }
 
