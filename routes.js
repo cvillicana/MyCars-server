@@ -46,5 +46,8 @@ module.exports = function(app){
 
     // Set up routes
     app.use('/api/v1', apiRoutes);
+    app.get('/', (req, res) => {
+      res.send("Hey!");
+    })
 
 }
