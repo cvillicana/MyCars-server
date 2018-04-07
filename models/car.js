@@ -22,6 +22,24 @@ var CarSchema = new mongoose.Schema({
         type: String,
         required: true
       },
+      kilometer:{
+        type: String
+      },
+      other:{
+        type: String
+      },
+      transmission:{
+        type: String
+      },
+      gas:{
+        type: String
+      },
+      contactPhone:{
+        type: String
+      },
+      ownerName:{
+        type: String
+      },
       _user: { type: mongoose.Schema.Types.ObjectId, ref: 'User'},
       pictures: [{
         type: String

@@ -8,7 +8,7 @@ exports.saveCar = function(req, res, next){
   var email = req.user._doc.email;
 
   if(!email){
-      return res.status(400).send({error: 'Not a valid token'});
+      return res.status(401).send({error: 'Not a valid token'});
   }
 
   User.findOne({email: email}, function(err, user){
@@ -23,8 +23,10 @@ exports.saveCar = function(req, res, next){
           make : req.body.make,
           model : req.body.model,
           version : req.body.version,
-          userId : user._id,
-          price : req.body.price
+          _user : user._id,
+          price : req.body.price,
+          contactPhone: req.body.contactPhone,
+          ownerName: req.body.ownerName
         });
 
         car.save(function(err, _car){
@@ -41,6 +43,51 @@ exports.saveCar = function(req, res, next){
         });
       }
   });
+
+}
+
+exports.myCars = function(req, res, next){
+
+  var email = req.user._doc.email;
+
+  if(!email){
+      return res.status(401).send({error: 'Not a valid token'});
+  }
+
+  User.findOne({email: email}, function(err, user){
+
+      if(err){
+        return next(err);
+      }
+
+      if(user){
+        Car.find({_user:user._id}, function(err, cars){
+
+          if(err){
+            return next(err);
+          }
+
+          if(!cars){
+            return res.status(200).send({message: "You don't have any cars yet", success: false});
+          }
+
+          if(cars){
+
+            var result = {
+              success :true,
+              cars : cars
+            }
+
+            res.status(200).send(result);
+          }
+
+        });
+
+
+      }
+
+  });
+
 
 }
 

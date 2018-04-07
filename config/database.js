@@ -2,11 +2,11 @@ module.exports = function(){
   switch(process.env.NODE_ENV){
     case 'dev':
       return{
-        'url': 'mongodb://ds123084.mlab.com:23084/heroku_1jnd7ck6',
+        'url': 'mongodb://54.144.106.244:27017/carshare-dev',
         options : {
           useMongoClient: true,
-          user: 'carpooldb',
-          pass: 'mI4v1LL1'
+          user: 'carsharedba',
+          pass: 'carshare123'
         }
       }
     case 'local':
