@@ -43,6 +43,7 @@ module.exports = function(app){
     carRoutes.post('/', requireAuth, CarController.saveCar);
     carRoutes.post('/images', upload.any(), requireAuth , CarController.uploadImage);
     carRoutes.put('/:id/images', requireAuth, CarController.removeImage);
+    carRoutes.put('/:id', requireAuth, CarController.updateCarProperty);
 
 
     // Set up routes

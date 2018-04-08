@@ -88,7 +88,7 @@ exports.removeImage = function(req, res, next){
                 return next(err);
               }
 
-              res.status(201).json({
+              res.status(200).json({
                 message: "picture removed",
                 success: true
               });
@@ -144,6 +144,55 @@ exports.myCars = function(req, res, next){
   });
 
 
+}
+
+exports.updateCarProperty = function(req, res, next){
+  var email = req.user._doc.email;
+  var carId = req.params.id;
+  var toUpdate = req.body;
+
+  if(!email){
+      return res.status(401).send({error: 'Not a valid token'});
+  }
+
+  User.findOne({email: email}, function(err, user){
+
+      if(err){
+          return next(err);
+      }
+
+      if(user){
+
+        Car.findOne({_id:carId, _user: req.user}, function(err, car){
+
+            if(err){
+                return next(err);
+            }
+
+            if(!car){
+                res.status(404).json({
+                    success: false,
+                    message: "car not found"
+                });
+            }
+
+            car.set(toUpdate);
+
+            car.save(function(err, _car){
+
+              if(err){
+                return next(err);
+              }
+
+              res.status(200).json({
+                message: "updated",
+                success: true
+              });
+            });
+        });
+
+      }
+  });
 }
 
 exports.uploadImage = function(req, res, next){
