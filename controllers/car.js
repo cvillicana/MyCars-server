@@ -46,6 +46,61 @@ exports.saveCar = function(req, res, next){
 
 }
 
+exports.removeImage = function(req, res, next){
+
+  var email = req.user._doc.email;
+
+  var carId = req.params.id;
+
+  var carImages = req.body.pictures;
+
+  if(!email){
+      return res.status(401).send({error: 'Not a valid token'});
+  }
+
+  User.findOne({email: email}, function(err, user){
+
+      if(err){
+          return next(err);
+      }
+
+      if(user){
+
+        Car.findOne({_id:carId, _user: req.user}, function(err, car){
+
+            if(err){
+                return next(err);
+            }
+
+            if(!car){
+                res.status(404).json({
+                    success: false,
+                    message: "car not found"
+                });
+            }
+
+            car.pictures = carImages;
+
+
+            car.save(function(err, _car){
+
+              if(err){
+                return next(err);
+              }
+
+              res.status(201).json({
+                message: "picture removed",
+                success: true
+              });
+            });
+        });
+
+      }
+  });
+
+
+}
+
 exports.myCars = function(req, res, next){
 
   var email = req.user._doc.email;

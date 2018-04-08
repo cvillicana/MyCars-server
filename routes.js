@@ -38,11 +38,12 @@ module.exports = function(app){
     meliRoutes.get('/categories', MeliController.categories);
 
     //Car Routes
-    apiRoutes.use('/cars', userRoutes);
-    userRoutes.get('/me', requireAuth, CarController.myCars);
-    userRoutes.post('/', requireAuth, CarController.saveCar);
-    // userRoutes.put('/me', requireAuth, UserController.updateMyUser);
-    userRoutes.post('/images', upload.any(), requireAuth , CarController.uploadImage);
+    apiRoutes.use('/cars', carRoutes);
+    carRoutes.get('/me', requireAuth, CarController.myCars);
+    carRoutes.post('/', requireAuth, CarController.saveCar);
+    carRoutes.post('/images', upload.any(), requireAuth , CarController.uploadImage);
+    carRoutes.put('/:id/images', requireAuth, CarController.removeImage);
+
 
     // Set up routes
     app.use('/api/v1', apiRoutes);
