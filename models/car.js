@@ -37,6 +37,9 @@ var CarSchema = new mongoose.Schema({
       contactPhone:{
         type: String
       },
+      shareId:{
+        type: String
+      },
       ownerName:{
         type: String
       },

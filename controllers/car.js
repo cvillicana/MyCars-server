@@ -25,6 +25,7 @@ exports.saveCar = function(req, res, next){
           version : req.body.version,
           _user : user._id,
           price : req.body.price,
+          shareId: Math.floor(Math.random() * (99999 - 10000) + 10000),
           contactPhone: req.body.contactPhone,
           ownerName: req.body.ownerName
         });
