@@ -241,3 +241,32 @@ exports.uploadImage = function(req, res, next){
     .catch((err) => res.status(400).send());
 
 }
+
+exports.getCarByShareId = function(req, res, next){
+
+  var shareId = req.params.id;
+
+  if(!shareId){
+    return res.status(400).send({error: 'Not a valid share id'});
+  }
+
+  Car.findOne({shareId: shareId})
+      .populate({path: '_user', select: 'picture'})
+      .exec(function(err, car){
+        if(err){
+          return next(err);
+        }
+
+        if(car){
+
+            var result = {
+              success :true,
+              cars : car
+            }
+
+            res.status(200).send(result);
+
+        }
+
+      })
+}
